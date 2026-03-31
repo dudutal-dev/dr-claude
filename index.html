@@ -504,7 +504,7 @@ const DOC_CATS=[
   {id:"imaging",l:"הדמיה (CT/MRI/US)",e:"🔬",c:"rgba(96,165,250,.2)",tc:"var(--sky)"},
   {id:"prescription",l:"מרשם תרופות",e:"💊",c:"rgba(192,132,252,.2)",tc:"var(--purple)"},
   {id:"referral",l:"הפנייה לרופא",e:"📋",c:"rgba(251,191,36,.2)",tc:"var(--amber)"},
-  {id:"report",l:"דו"ח/חוות דעת",e:"📝",c:"rgba(226,185,106,.2)",tc:"var(--gold)"},
+  {id:"report",l:"דוח / חוות דעת",e:"📝",c:"rgba(226,185,106,.2)",tc:"var(--gold)"},
   {id:"other",l:"אחר",e:"📁",c:"rgba(148,163,184,.15)",tc:"var(--sub)"},
 ];
 
@@ -745,7 +745,7 @@ function rHist(){
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn k" style="width:auto;padding:10px 16px;font-size:16px;min-height:44px" onclick="gTC('${sel.id}')" title="פתח שיחה">💬</button>
-          ${sel.aiDiagnosis?`<button class="btn g" style="width:auto;padding:10px 16px;font-size:12px;min-height:44px" onclick="shareOrCopy('אבחנת ד\'\'ר קלוד','${esc(sel.aiDiagnosis)}')">📤</button>`:""}
+          ${sel.aiDiagnosis?`<button class="btn g" style="width:auto;padding:10px 16px;font-size:12px;min-height:44px" onclick="shareAiDx('${sel.id}')">📤</button>`:""}
           ${sel.status!=="completed"?`<button class="btn s" style="width:auto;padding:10px 16px;font-size:16px;min-height:44px" onclick="mD('${sel.id}')" title="סמן הושלם">✅</button>`:""}
         </div>
       </div>
@@ -764,7 +764,7 @@ function rHDx(sel){
     ${sel.aiDiagnosis?`<div class="card sky">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
         <p style="font-size:13px;color:var(--sky);font-weight:600">🤖 הערכת ד"ר קלוד</p>
-        <button class="btn g" style="width:auto;padding:6px 12px;font-size:12px;min-height:34px" onclick="shareOrCopy('הערכת ד\'\'ר קלוד','${esc(sel.aiDiagnosis)}')">📤 שתף</button>
+        <button class="btn g" style="width:auto;padding:6px 12px;font-size:12px;min-height:34px" onclick="shareAiDx('${sel.id}')">📤 שתף</button>
       </div>
       <div style="font-size:14px;color:var(--text);line-height:1.85;white-space:pre-wrap">${esc(sel.aiDiagnosis)}</div>
     </div>`:`<div class="card" style="text-align:center;padding:2rem;color:var(--muted)">
@@ -948,7 +948,7 @@ function rSet(){
 
     <div class="card" style="margin-bottom:1.2rem">
       <div class="sh"><div class="sh-bar" style="background:var(--purple)"></div><h3>📱 אודות ד"ר קלוד</h3></div>
-      ${[["🩺","מודל AI","Claude Haiku 4.5"],["📚","ספרות רפואית","Harrison's, DSM-5, Nelson's, Fitzpatrick's ועוד"],["💾","שמירת נתונים","מקומי על המכשיר בלבד"],["🔒","פרטיות","מידע לא נשלח לשרתים חיצוניים"],["🌐","שפות","עברית · English"],["⚕️","גרסה","ד\"ר קלוד v2.0"]].map(([e,l,v])=>`
+      ${[["🩺","מודל AI","Claude Haiku 4.5"],["📚","ספרות רפואית","Harrison's, DSM-5, Nelson's, Fitzpatrick's ועוד"],["💾","שמירת נתונים","מקומי על המכשיר בלבד"],["🔒","פרטיות","מידע לא נשלח לשרתים חיצוניים"],["🌐","שפות","עברית · English"],["⚕️","גרסה","דר קלוד v2.0"]].map(([e,l,v])=>`
       <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:14px;color:var(--sub)">${e} ${l}</span>
         <span style="font-size:14px;color:var(--text);font-weight:500;text-align:left;max-width:58%">${v}</span>
@@ -1253,6 +1253,10 @@ window.tstKey=async()=>{
   S.sld=false;R();
 };
 window.shareOrCopy=shareOrCopy;
+window.shareAiDx=id=>{
+  const c=S.consults.find(x=>x.id===id);
+  if(c?.aiDiagnosis)shareOrCopy('הערכת דר קלוד',c.aiDiagnosis);
+};
 window.copyText=copyText;
 
 // ── INIT ──
